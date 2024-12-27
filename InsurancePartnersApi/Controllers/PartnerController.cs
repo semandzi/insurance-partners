@@ -1,5 +1,6 @@
 ﻿using InsurancePartnersApi.Models;
 using InsurancePartnersApi.Repositories;
+using InsurancePartnersApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
@@ -10,10 +11,12 @@ namespace InsurancePartnersApi.Controllers
     public class PartnerController : ControllerBase
     {
         private readonly IGenericRepository<Partner> _repository;
+        private readonly PartnerService _partnerService;
 
-        public PartnerController(IGenericRepository<Partner> repository)
+        public PartnerController(IGenericRepository<Partner> repository, PartnerService partnerService)
         {
             _repository = repository;
+            _partnerService = partnerService;
         }
 
         [HttpGet]
@@ -36,31 +39,39 @@ namespace InsurancePartnersApi.Controllers
         [HttpPost]
         public async Task<bool> Add([FromBody] Partner partner)
         {
+            partner = _partnerService.AdjustPartnerBeforeSaving(partner);
             partner.CreatedAtUtc = DateTime.UtcNow;
-            var query = @"INSERT INTO Partner (FirstName, LastName, Address, PartnerNumber, PartnerTypeId, CreatedAtUtc, CreatedByUser, IsForeign, ExternalCode, Gender) 
-                      VALUES (@FirstName, @LastName, @Address, @PartnerNumber, @PartnerTypeId, GETUTCDATE(), @CreatedByUser, @IsForeign, @ExternalCode, @Gender)";            
+            var query = @"INSERT INTO Partner (FirstName, LastName, Address, PartnerNumber, CroatianPIN, PartnerTypeId, CreatedAtUtc, CreatedByUser, IsForeign, ExternalCode, Gender) 
+                      VALUES (@FirstName, @LastName, @Address, @PartnerNumber, @CroatianPIN, @PartnerTypeId, GETUTCDATE(), @CreatedByUser, @IsForeign, @ExternalCode, @Gender)";            
             var result = await _repository.ExecuteAsync(query, partner);
             return result > 0 ;
         }
 
         [HttpPut("{id}")]
         public async Task<bool> Update( [FromRoute]int id, [FromBody] Partner partner) {
-            var query = @"
-            UPDATE Partner
-            SET
-                FirstName = @FirstName,
-                LastName = @LastName,
-                Address = @Address,
-                PartnerNumber = @PartnerNumber,
-                CroatianPIN = @CroatianPIN,
-                PartnerTypeId = @PartnerTypeId,
-                IsForeign = @IsForeign,
-                ExternalCode = @ExternalCode,
-                Gender = @Gender
-            WHERE Id = @Id";
+            if (partner == null || partner.Id != id)
+            {
+                return false;
+            }
+            else { 
+                partner = _partnerService.AdjustPartnerBeforeSaving(partner);
+                var query = @"
+                UPDATE Partner
+                SET
+                    FirstName = @FirstName,
+                    LastName = @LastName,
+                    Address = @Address,
+                    PartnerNumber = @PartnerNumber,
+                    CroatianPIN = @CroatianPIN,
+                    PartnerTypeId = @PartnerTypeId,
+                    IsForeign = @IsForeign,
+                    ExternalCode = @ExternalCode,
+                    Gender = @Gender
+                WHERE Id = @Id";
 
-            var result = await _repository.ExecuteAsync(query, partner);
-            return result > 0;
+                var result = await _repository.ExecuteAsync(query, partner);
+                return result > 0;
+            }            
         }
 
         [HttpDelete("{id}")]
