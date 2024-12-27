@@ -6,7 +6,7 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
-        public long PartnerNumber { get; set; }
+        public decimal PartnerNumber { get; set; }
         public string? CroatianPIN { get; set; }
         public int PartnerTypeId { get; set; }
         public DateTime CreatedAtUtc { get; set; }
