@@ -1,0 +1,26 @@
+
+.selected-row {
+    background-color: lightblue !important;    
+}
+
+/* Targeting the last column in every row */
+td:last-child {
+    width: 250px; /* Set width for the last column */
+    padding: 5px; /* Optionally add padding */
+}
+
+th:last-child {
+    width: 250px; /* Optional: set the width of the header for the last column */
+}
+
+th {
+    background-color: white !important;
+}
+
+th {
+    background-color: transparent !important;
+}
+
+td {
+    background-color: transparent !important;
+}
