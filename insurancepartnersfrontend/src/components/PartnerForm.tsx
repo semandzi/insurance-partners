@@ -34,8 +34,7 @@ const PartnerForm: React.FC<PartnerFormProps> = ({ partner, onSubmit }) => {
     return (
         
         <div className="d-flex flex-column flex justify-content-center align-items-center p-1">
-            <h2>Add New Partner</h2>
-            {/*{error && <Alert variant="danger">{error}</Alert>}*/}
+            <h2>Add New Partner</h2>            
             <Form onSubmit={handleSubmit} className="row gap-2 p-2 rounded-3 justify-content-center shadow "
                 style={{ maxWidth: '400px'}}>
                 <Form.Group>              
