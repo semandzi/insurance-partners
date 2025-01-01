@@ -1,6 +1,6 @@
 import { Policy } from "../types/Policy";
 
-const BASE_URL = "https://localhost:44316/api";
+const BASE_URL = "http://localhost:5033/api";
 
 
 export const fetchPolicies = async (): Promise<Policy[]> => {

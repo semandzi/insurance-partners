@@ -1,6 +1,6 @@
 import { Partner } from "../types/Partner";
 
-const BASE_URL = "https://localhost:44316/api";
+const BASE_URL = "http://localhost:5033/api";
 
 export const fetchPartners = async (): Promise<Partner[]> => {
     const response = await fetch(`${BASE_URL}/Partner`);
