@@ -9,7 +9,7 @@ import AddPartnerPage from './pages/AddPartnerPage'
 
 
 
-const  App: React.FC = () => {
+ const  App: React.FC = () => {
      
   return (
       <>
