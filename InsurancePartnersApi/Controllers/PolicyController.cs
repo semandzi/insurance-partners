@@ -1,5 +1,6 @@
 ﻿using InsurancePartnersApi.Models;
 using InsurancePartnersApi.Repositories;
+using InsurancePartnersApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InsurancePartnersApi.Controllers
@@ -9,10 +10,12 @@ namespace InsurancePartnersApi.Controllers
     public class PolicyController : ControllerBase
     {
         private readonly IGenericRepository<Policy> _repository;
+        private readonly TypeService _policyService;
 
-        public PolicyController(IGenericRepository<Policy> repository)
+        public PolicyController(IGenericRepository<Policy> repository, TypeService policyService)
         {
             _repository = repository;
+            _policyService = policyService;
         }
 
         [HttpGet]
@@ -24,12 +27,15 @@ namespace InsurancePartnersApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] Policy policy)
+        public async Task<bool> Add([FromBody] Policy policy)
         {
+            var policyAmount = _policyService.ToDecimal(policy.PolicyAmount.ToString());
+            policy.PolicyAmount = policyAmount;
+            
             var query = @"INSERT INTO Policy (PolicyNumber, PolicyAmount, PartnerId) 
                       VALUES (@PolicyNumber, @PolicyAmount, @PartnerId)";
-            await _repository.ExecuteAsync(query, policy);
-            return Ok();
+            var result = await _repository.ExecuteAsync(query, policy);
+            return result > 0;
         }
 
         [HttpPut("{id}")]

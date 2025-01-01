@@ -29,7 +29,7 @@
                                 FirstName NVARCHAR(255) NOT NULL,
                                 LastName NVARCHAR(255) NOT NULL,
                                 Address NVARCHAR(255) NOT NULL,
-                                PartnerNumber BIGINT NOT NULL,
+                                PartnerNumber DECIMAL(20, 0) NOT NULL,
                                 CroatianPIN NVARCHAR(20) NULL,
                                 PartnerTypeId INT NOT NULL,
                                 CreatedAtUtc DATETIME NOT NULL,
