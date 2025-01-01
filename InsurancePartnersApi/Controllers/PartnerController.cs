@@ -11,9 +11,9 @@ namespace InsurancePartnersApi.Controllers
     public class PartnerController : ControllerBase
     {
         private readonly IGenericRepository<Partner> _repository;
-        private readonly PartnerService _partnerService;
+        private readonly TypeService _partnerService;
 
-        public PartnerController(IGenericRepository<Partner> repository, PartnerService partnerService)
+        public PartnerController(IGenericRepository<Partner> repository, TypeService partnerService)
         {
             _repository = repository;
             _partnerService = partnerService;
@@ -39,7 +39,8 @@ namespace InsurancePartnersApi.Controllers
         [HttpPost]
         public async Task<bool> Add([FromBody] Partner partner)
         {
-            partner = _partnerService.AdjustPartnerBeforeSaving(partner);
+            var partnerNumber = _partnerService.ToDecimal(partner.PartnerNumber.ToString());
+            partner.PartnerNumber = partnerNumber;
             partner.CreatedAtUtc = DateTime.UtcNow;
             var query = @"INSERT INTO Partner (FirstName, LastName, Address, PartnerNumber, CroatianPIN, PartnerTypeId, CreatedAtUtc, CreatedByUser, IsForeign, ExternalCode, Gender) 
                       VALUES (@FirstName, @LastName, @Address, @PartnerNumber, @CroatianPIN, @PartnerTypeId, GETUTCDATE(), @CreatedByUser, @IsForeign, @ExternalCode, @Gender)";            
@@ -54,7 +55,8 @@ namespace InsurancePartnersApi.Controllers
                 return false;
             }
             else { 
-                partner = _partnerService.AdjustPartnerBeforeSaving(partner);
+                var partnerNumber = _partnerService.ToDecimal(partner.PartnerNumber.ToString());
+                partner.PartnerNumber = partnerNumber;
                 var query = @"
                 UPDATE Partner
                 SET
