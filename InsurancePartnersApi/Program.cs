@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);// Register IConfiguration for DI
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));// Register the GenericRepository
-builder.Services.AddScoped<PartnerService>();//Register Partner Service
+builder.Services.AddScoped<TypeService>();//Register Partner Service
 builder.Services.AddScoped<SqlConnection>(provider =>
 {
     return new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"));
