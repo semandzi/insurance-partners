@@ -1,14 +1,26 @@
 ﻿import { Partner } from "../types/Partner";
+import { Policy } from "../types/Policy";
 
 // Check fisrt and last name (string, min 2, max 255)
 const isValidName = (name: string): boolean => {
     return name.length >= 2 && name.length <= 255; // Provjera duljine stringa
 };
 
+//Check if string has characters
+const isNumericCharacters = (str: string): boolean => {
+    return str === str.toString().replace(/\D/g, '');
+}
+
+//Checks if string is in decimal format
+const isDecimal = (str: string): boolean => {
+    const decimalRegex = /^-?\d+(\.\d+)?$/;
+    return decimalRegex.test(str);
+}
+
 // Check PartnerNumber (exact 20 dgits)
-const isValidPartnerNumber = (partnerNumber: string): boolean => {
-    const strWithoutLetters = partnerNumber.toString().replace(/\D/g, ''); // Ensure it's a string and strip out any non-numeric characters
-    const partnerNumberRegex = /^\d{20}$/; // Točno 20 znamenki
+const isValidPartnerNumber = (str: string): boolean => {
+    const strWithoutLetters = str.toString().replace(/\D/g, ''); // Ensure it's a string and strip out any non-numeric characters
+    const partnerNumberRegex = /^\d{20}$/; // Exact 20 digits
     return partnerNumberRegex.test(strWithoutLetters);
 };
 
@@ -87,3 +99,16 @@ export const validatePartnerData = (data: Partner) => {
 
     return errors;
 };
+
+export const validatePolicyData = (policy: Policy) => {
+
+    const errors: Record<string, string> = {};
+
+    if (!isNumericCharacters(policy.policyNumber))
+        errors.policyNumber = 'Policy number must be number.';
+
+    if (!isDecimal(policy.policyAmount))
+        errors.policyAmount = 'Policy amount must be in decimal format.';
+
+    return errors;
+}
