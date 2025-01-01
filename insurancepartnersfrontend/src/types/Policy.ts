@@ -1,5 +1,5 @@
 export interface Policy{
-    partnerId: string;
+    partnerId: number;
     policyNumber: string,
-    policyAmount: number
+    policyAmount: string
 }
