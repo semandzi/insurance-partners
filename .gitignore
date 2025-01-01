@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/InsurancePartnersApi/obj/Debug/net8.0/InsurancePartnersApi.AssemblyInfo.cs
+/InsurancePartnersApi/obj/Debug/net8.0/InsurancePartnersApi.AssemblyInfoInputs.cache
+/InsurancePartnersApi/obj/Debug/net8.0/InsurancePartnersApi.assets.cache
+/InsurancePartnersApi/obj/Debug/net8.0/InsurancePartnersApi.GeneratedMSBuildEditorConfig.editorconfig
+/.vs/InsurancePartners/v17/.suo
